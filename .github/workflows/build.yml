@@ -58,3 +58,18 @@ jobs:
         # squirrel
       - name: Release
         run: .\package.ps1 -version 1.0.0
+
+      - name: Check zip
+        run: ls -Filter *.zip
+
+      - name: Check exe
+        run: ls .\releases
+      
+      - name: Copy single file to remote
+        uses: garygrossgarten/github-action-scp@release
+        with:
+          local: .\releases.zip
+          remote: /home/statics/cloud77-wpf/releases_new.zip
+          host: ${{ secrets.ALICLOUD_HOST }}
+          username: ${{ secrets.ALICLOUD_USER }}
+          password: ${{ secrets.ALICLOUD_PASSWORD }}
