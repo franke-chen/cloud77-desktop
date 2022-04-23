@@ -1,4 +1,13 @@
-﻿mkdir releases_new
-Expand-Archive -LiteralPath .\releases_new.zip -DestinationPath .\releases_new
+﻿$packageid
+Get-Content .\Cloud77.WPF.beta.nuspec | ForEach-Object {
+    if ($_ -match '<id>.*</id>')
+    {
+        $packageid = $_ -replace("<id>", "")
+        $packageid = $packageid -replace("</id>", "")
+        $packageid = $packageid -replace("\s", "")
+    }
+    $_
+}
 
-ls releases_new
+echo $packageid
+echo 'done'

@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <package>
   <metadata minClientVersion="2.5">
-    <id>Cloud77.WPF</id>
+    <id>Cloud77</id>
     <!--version is overrided in nuget pack-->
     <version>0.0.0</version>
     <description>Cloud77.WPF</description>

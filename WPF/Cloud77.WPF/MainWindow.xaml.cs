@@ -106,7 +106,7 @@ namespace Cloud77.WPF
 
             var local = System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "Cloud77-Release");
 
-            var remote = "https://www.cloud77.top/statics/cloud77-wpf/releases";
+            var remote = "https://www.cloud77.top/statics/cloud77-wpf/stable/releases";
 
             var path = (bool)this.remote.IsChecked ? remote : local;
             this.message.Text = path;

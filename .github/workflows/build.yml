@@ -53,11 +53,11 @@ jobs:
 
         # nuget pack
       - name: Pack
-        run: nuget pack Cloud77.WPF.nuspec -Version 1.0.0 -OutputDirectory .\nupkg -Properties Configuration=Release
+        run: nuget pack Cloud77.WPF.stable.nuspec -Version 1.0.0 -OutputDirectory .\nupkg -Properties Configuration=Release
 
         # squirrel
       - name: Release
-        run: .\package.ps1 -version 1.0.0
+        run: .\package.ps1 -tag stable -version 1.0.0
 
       - name: Check zip
         run: ls -Filter *.zip
@@ -75,7 +75,7 @@ jobs:
         uses: garygrossgarten/github-action-scp@release
         with:
           local: .\releases_new.zip
-          remote: /home/statics/cloud77-wpf/releases_new.zip
+          remote: /home/statics/cloud77-wpf/stable/releases_new.zip
           host: ${{ secrets.ALICLOUD_HOST }}
           username: ${{ secrets.ALICLOUD_USER }}
           password: ${{ secrets.ALICLOUD_PASSWORD }}
@@ -94,7 +94,7 @@ jobs:
           script: 
             pwd &&
             ls &&
-            cd /home/statics/cloud77-wpf &&
+            cd /home/statics/cloud77-wpf/stable &&
             echo 'start to consume package' &&
             unzip -o ./releases_new.zip &&
             rm releases.zip && 
