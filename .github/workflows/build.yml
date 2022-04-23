@@ -93,8 +93,8 @@ jobs:
           script: 
             pwd &&
             ls &&
-            cd /home/statics/cloud77-wpf
-            echo 'start to consume package'
+            cd /home/statics/cloud77-wpf &&
+            echo 'start to consume package' &&
             unzip -o ./releases_new.zip &&
             rm releases.zip && 
             mv releases_new.zip releases.zip &&
