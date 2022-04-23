@@ -65,9 +65,6 @@ jobs:
       - name: Check exe
         run: ls .\releases
 
-      - name: Unpack
-        run: .\unpack.ps1
-
       - name: Check exe new
         run: ls .\releases_new
       
