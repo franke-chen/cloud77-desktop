@@ -20,6 +20,7 @@ env:
 jobs:
   # This workflow contains a single job called "build"
   build:
+    name: build-job
     # The type of runner that the job will run on
     runs-on: windows-latest
 
@@ -81,6 +82,8 @@ jobs:
           password: ${{ secrets.ALICLOUD_PASSWORD }}
 
   deploy:
+    name: deploy-job
+    needs: build-job
     runs-on: ubuntu-latest
 
     steps:
