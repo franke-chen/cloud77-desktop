@@ -25,6 +25,6 @@ Start-Process -FilePath ".\squirrel\Squirrel.exe" -ArgumentList "
     --setupIcon=.\cloud77.ico
     --loadingGif=.\loading.gif" -Wait
 
-Compress-Archive -LiteralPath .\releases -DestinationPath .\releases_new.zip -Force
+Compress-Archive -Path .\releases\* -DestinationPath .\releases_new.zip
 
 echo 'App pack is done'
