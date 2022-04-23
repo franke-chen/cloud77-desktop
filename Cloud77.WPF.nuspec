@@ -11,11 +11,11 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <copyright>Copyright 2022</copyright>
     <tags>Cloud77.WPF</tags>
-    <icon>cloud77.ico</icon>
+    <icon>logo.png</icon>
     <dependencies/>
   </metadata>
   <files>
     <file src=".\WPF\Cloud77.WPF\bin\x64\Release\**" target="lib\net472" exclude="**\*.pdb"/>
-    <file src=".\cloud77.ico" target=""/>
+    <file src=".\logo.png" target=""/>
   </files>
 </package>
