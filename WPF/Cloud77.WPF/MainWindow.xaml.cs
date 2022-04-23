@@ -41,7 +41,7 @@ namespace Cloud77.WPF
 
                 this.message.Invoke(() =>
                 {
-                    this.message.Text = "Welcome to app";
+                    this.message.Content = "Welcome to app";
                 });
             });
         }
@@ -56,7 +56,7 @@ namespace Cloud77.WPF
                     {
                         this.message.Invoke(() =>
                         {
-                            this.message.Text = "Checking updates " + progress.ToString() + "%";
+                            this.message.Content = "Checking updates " + progress.ToString() + "%";
                         });
                     });
 
@@ -64,7 +64,7 @@ namespace Cloud77.WPF
                     {
                         this.message.Invoke(new Action(() =>
                         {
-                            this.message.Text = "No new update. You have latest version now.";
+                            this.message.Content = "No new update. You have latest version now.";
                         }));
                         return;
                     }
@@ -78,25 +78,25 @@ namespace Cloud77.WPF
                     {
                         this.Dispatcher.Invoke(new Action<int>((p) =>
                         {
-                            this.message.Text = "New version is found, download update: " + progress.ToString() + "%";
+                            this.message.Content = "New version is found, download update: " + progress.ToString() + "%";
                             this.progress.Value = progress;
                         }), System.Windows.Threading.DispatcherPriority.Normal, progress);
                     });
 
-                    this.message.Text = "Finish download, applying update...";
+                    this.message.Content = "Finish download, applying update...";
 
                     await mgr.ApplyReleases(updateInfo);
 
                     await mgr.CreateUninstallerRegistryEntry();
                 }
 
-                this.message.Text = "New release is ready and applied, restart to activate new update.";
+                this.message.Content = "New release is ready and applied, restart to activate new update.";
 
                 this.reload.Visibility = Visibility.Visible;
             }
             catch (Exception ex)
             {
-                this.message.Text = ex.Message;
+                this.message.Content = ex.Message;
             }
         }
 
@@ -109,7 +109,7 @@ namespace Cloud77.WPF
             var remote = "https://www.cloud77.top/statics/cloud77-wpf/stable/releases";
 
             var path = (bool)this.remote.IsChecked ? remote : local;
-            this.message.Text = path;
+            this.message.Content = path;
             AutoUpdate(path);
         }
 
