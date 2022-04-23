@@ -40,6 +40,13 @@
             <StackPanel Orientation="Vertical">
                 <RadioButton Content="remote" IsChecked="True" x:Name="remote"/>
                 <RadioButton Content="local" IsChecked="False"/>
+                <Button Content="todo1"/>
+                <Button Content="todo2"/>
+                <Button Content="todo3"/>
+                <Button Content="todo4"/>
+                <Button Content="todo5"/>
+                <TextBlock Text="placeholder"/>
+                <PasswordBox Password="123456"/>
             </StackPanel>
 
             <Image Grid.Column="1" Source=".\background.jpg" Margin="5px"></Image>
