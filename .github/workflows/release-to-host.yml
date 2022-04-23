@@ -4,14 +4,12 @@ name: build
 
 # Controls when the workflow will run
 on:
-  # Triggers the workflow on push or pull request events but only for the main branch
-  push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
-
-  # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
+    inputs:
+      app_version:
+        description: 'App Version (major, minor, patch)'
+        required: true
+        default: '1.0.0'
 
 env:
   ACTIONS_ALLOW_UNSECURE_COMMANDS: true
@@ -27,6 +25,8 @@ jobs:
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v3
+        with:
+          ref: main
 
       - name: Run a one-line script
         run: pwd | ls
@@ -53,11 +53,11 @@ jobs:
 
         # nuget pack
       - name: Pack
-        run: nuget pack Cloud77.WPF.stable.nuspec -Version 1.0.0 -OutputDirectory .\nupkg -Properties Configuration=Release
+        run: nuget pack Cloud77.WPF.stable.nuspec -Version ${{ github.event.inputs.app_version }} -OutputDirectory .\nupkg -Properties Configuration=Release
 
         # squirrel
       - name: Release
-        run: .\package.ps1 -version 1.0.0 -package Cloud77
+        run: .\package.ps1 -version ${{ github.event.inputs.app_version }} -package Cloud77
 
       - name: Check zip
         run: ls -Filter *.zip
