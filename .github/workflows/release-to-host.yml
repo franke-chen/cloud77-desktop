@@ -93,7 +93,9 @@ jobs:
             ls &&
             cd /home/statics/cloud77-wpf/stable &&
             echo 'start to consume package' &&
-            unzip -o ./releases_new.zip &&
+            unzip ./releases_new.zip -d releases_new &&
+            rm releases -r &&
+            mv releases_new releases &&
             rm releases.zip && 
             mv releases_new.zip releases.zip &&
             echo 'consume is done'
