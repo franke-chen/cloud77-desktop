@@ -64,11 +64,17 @@ jobs:
 
       - name: Check exe
         run: ls .\releases
+
+      - name: Unpack
+        run: .\unpack.ps1
+
+      - name: Check exe new
+        run: ls .\releases_new
       
       - name: Copy single file to remote
         uses: garygrossgarten/github-action-scp@release
         with:
-          local: .\releases.zip
+          local: .\releases_new.zip
           remote: /home/statics/cloud77-wpf/releases_new.zip
           host: ${{ secrets.ALICLOUD_HOST }}
           username: ${{ secrets.ALICLOUD_USER }}
