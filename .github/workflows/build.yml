@@ -64,9 +64,6 @@ jobs:
 
       - name: Check exe
         run: ls .\releases
-
-      - name: Check exe new
-        run: ls .\releases_new
       
       - name: Copy single file to remote
         uses: garygrossgarten/github-action-scp@release
