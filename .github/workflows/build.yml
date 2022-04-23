@@ -46,7 +46,7 @@ jobs:
         run: nuget restore .\WPF\Cloud77.WPF.sln
 
       - name: Build and Publish Web App
-        run: msbuild .\WPF\Cloud77.WPF.sln /p:Configuration=Release /p:PlatformTarget=x64
+        run: msbuild .\WPF\Cloud77.WPF.sln /p:Configuration=Release /p:Platform=x64
 
       - name: Download squirrel and releases.zip
         run: .\download.ps1
