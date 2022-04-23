@@ -1,0 +1,57 @@
+﻿<Controls:MetroWindow x:Class="Cloud77.WPF.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+        xmlns:local="clr-namespace:Cloud77.WPF" 
+        ShowTitleBar="True"
+                      ShowIconOnTitleBar="True"
+                      WindowStartupLocation="CenterScreen" 
+                      WindowState="Normal" 
+                      WindowStyle="ThreeDBorderWindow" 
+                      LeftWindowCommandsOverlayBehavior="Never"
+                      RightWindowCommandsOverlayBehavior="Never"
+                      TitleCharacterCasing="Normal"
+                      Loaded="MetroWindow_Loaded"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="auto"/>
+
+        </Grid.RowDefinitions>
+        <Button Content="Check Update" Click="Button_Click"/>
+        
+        <Button x:Name="reload" Content="Reload" Grid.Row="1" Visibility="Hidden" Click="Button_Click_1"/>
+
+        <Border Grid.Row="2">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="1*"/>
+                    <RowDefinition Height="auto"/>
+                </Grid.RowDefinitions>
+
+                <StackPanel Orientation="Vertical">
+                    <RadioButton Content="remote" IsChecked="False" x:Name="remote"/>
+                    <RadioButton Content="local" IsChecked="True"/>
+                </StackPanel>
+                <TextBlock x:Name="message" Text="Placeholder" Grid.Row="2"/>
+            </Grid>
+        </Border>
+
+        <StatusBar Grid.Row="3" Opacity="0.68">
+            <StatusBarItem Content="todo"/>
+
+            <StatusBarItem HorizontalAlignment="Right">
+                <Label>
+                    <ProgressBar x:Name="progress" Value="50" Width="300"/>
+                </Label>
+            </StatusBarItem>
+        </StatusBar>
+    </Grid>
+</Controls:MetroWindow>
