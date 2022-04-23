@@ -45,6 +45,9 @@ jobs:
       - name: Restore NuGet Packages
         run: nuget restore .\WPF\Cloud77.WPF.sln
 
+      - name: Update Assembly Version
+        run: .\set-version.ps1 -version ${{ github.event.inputs.app_version }}
+
       - name: Build and Publish Web App
         run: msbuild .\WPF\Cloud77.WPF.sln /p:Configuration=Release /p:Platform=x64
 

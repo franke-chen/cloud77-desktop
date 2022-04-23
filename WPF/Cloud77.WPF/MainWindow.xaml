@@ -8,7 +8,7 @@
         ShowTitleBar="True"
                       ShowIconOnTitleBar="True"
                       WindowStartupLocation="CenterScreen" 
-                      WindowState="Normal" 
+                      WindowState="Maximized" 
                       WindowStyle="ThreeDBorderWindow" 
                       LeftWindowCommandsOverlayBehavior="Never"
                       RightWindowCommandsOverlayBehavior="Never"
@@ -24,7 +24,12 @@
             <RowDefinition Height="auto"/>
 
         </Grid.RowDefinitions>
-        <Button Content="Check Update" Click="Button_Click"/>
+
+        <Menu IsMainMenu="True">
+            <MenuItem Header="File"/>
+            <MenuItem Header="About Me"/>
+            <MenuItem Header="Check Update" Click="Button_Click"/>
+        </Menu>
         
         <Button x:Name="reload" Content="Reload" Grid.Row="1" Visibility="Hidden" Click="Button_Click_1"/>
 
@@ -40,6 +45,9 @@
                     <RadioButton Content="remote" IsChecked="False" x:Name="remote"/>
                     <RadioButton Content="local" IsChecked="True"/>
                 </StackPanel>
+
+                <Image Grid.Row="1" Source=".\background.jpg" Margin="5px"></Image>
+                
                 <TextBlock x:Name="message" Text="Placeholder" Grid.Row="2"/>
             </Grid>
         </Border>
