@@ -79,3 +79,20 @@ jobs:
           host: ${{ secrets.ALICLOUD_HOST }}
           username: ${{ secrets.ALICLOUD_USER }}
           password: ${{ secrets.ALICLOUD_PASSWORD }}
+
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Deploy new releases
+        uses: cross-the-world/ssh-pipeline@v1.2.0
+        with:
+          host: ${{ secrets.ALICLOUD_HOST }}
+          user: ${{ secrets.ALICLOUD_USER }}
+          pass: ${{ secrets.ALICLOUD_PASSWORD }}
+          script: 
+            echo 'start to consume package'
+            unzip -o ./releases_new.zip &&
+            rm releases.zip && 
+            mv releases_new.zip releases.zip &&
+            echo 'consume is done'
