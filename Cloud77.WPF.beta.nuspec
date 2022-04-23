@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<package>
+  <metadata minClientVersion="2.5">
+    <id>Cloud77_Beta</id>
+    <!--version is overrided in nuget pack-->
+    <version>0.0.0</version>
+    <description>Cloud77 WPF Beta</description>
+    <authors>Cloud77 WPF</authors>
+    <title>Cloud77.WPF.Beta</title>
+    <projectUrl>https://www.cloud77.top</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <copyright>Copyright 2022</copyright>
+    <tags>Cloud77.WPF.Beta</tags>
+    <icon>logo.png</icon>
+    <dependencies/>
+  </metadata>
+  <files>
+    <file src=".\WPF\Cloud77.WPF\bin\x64\Release\**" target="lib\net472" exclude="**\*.pdb"/>
+    <file src=".\logo.png" target=""/>
+  </files>
+</package>

@@ -1,0 +1,99 @@
+# This is a basic workflow to help you get started with Actions
+
+name: build
+
+# Controls when the workflow will run
+on:
+  workflow_dispatch:
+    inputs:
+      app_version:
+        description: 'App Version (major, minor, patch)'
+        required: true
+        default: '1.0.0'
+
+env:
+  ACTIONS_ALLOW_UNSECURE_COMMANDS: true
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  build-job:
+    # The type of runner that the job will run on
+    runs-on: windows-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v3
+        with:
+          ref: main
+
+      - name: Run a one-line script
+        run: pwd | ls
+
+      - name: setup-msbuild
+        uses: microsoft/setup-msbuild@v1.1
+        with:
+          # The preferred processor architecture of MSBuild. Can be either "x86" or "x64". "x64" is only available from Visual Studio version 17.0 and later.
+          msbuild-architecture: x64
+
+      - name: Setup NuGet
+        uses: NuGet/setup-nuget@v1.0.2
+        with:
+          nuget-version: '5.x'
+     
+      - name: Restore NuGet Packages
+        run: nuget restore .\WPF\Cloud77.WPF.sln
+
+      - name: Build and Publish Web App
+        run: msbuild .\WPF\Cloud77.WPF.sln /p:Configuration=Release /p:Platform=x64
+
+      - name: Download squirrel and releases.zip
+        run: .\download.ps1
+
+        # nuget pack
+      - name: Pack
+        run: nuget pack Cloud77.WPF.stable.nuspec -Version ${{ github.event.inputs.app_version }} -OutputDirectory .\nupkg -Properties Configuration=Release
+
+        # squirrel
+      - name: Release
+        run: .\package.ps1 -version ${{ github.event.inputs.app_version }} -package Cloud77
+
+      - name: Check zip
+        run: ls -Filter *.zip
+
+      - name: Check exe
+        run: ls .\releases
+
+      - name: Check exe new
+        run: ls .\releases_new
+      
+      - name: Copy single file to remote
+        uses: garygrossgarten/github-action-scp@release
+        with:
+          local: .\releases_new.zip
+          remote: /home/statics/cloud77-wpf/stable/releases_new.zip
+          host: ${{ secrets.ALICLOUD_HOST }}
+          username: ${{ secrets.ALICLOUD_USER }}
+          password: ${{ secrets.ALICLOUD_PASSWORD }}
+
+  deploy-job:
+    needs: build-job
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Deploy new releases
+        uses: cross-the-world/ssh-pipeline@v1.2.0
+        with:
+          host: ${{ secrets.ALICLOUD_HOST }}
+          user: ${{ secrets.ALICLOUD_USER }}
+          pass: ${{ secrets.ALICLOUD_PASSWORD }}
+          script: 
+            pwd &&
+            ls &&
+            cd /home/statics/cloud77-wpf/stable &&
+            echo 'start to consume package' &&
+            unzip -o ./releases_new.zip &&
+            rm releases.zip && 
+            mv releases_new.zip releases.zip &&
+            echo 'consume is done'
