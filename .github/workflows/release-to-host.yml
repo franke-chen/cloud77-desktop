@@ -1,6 +1,6 @@
 # This is a basic workflow to help you get started with Actions
 
-name: build
+name: build-on-stable-deploy-to-host
 
 # Controls when the workflow will run
 on:
@@ -26,7 +26,7 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v3
         with:
-          ref: main
+          ref: stable
 
       - name: Run a one-line script
         run: pwd | ls
@@ -44,6 +44,9 @@ jobs:
      
       - name: Restore NuGet Packages
         run: nuget restore .\WPF\Cloud77.WPF.sln
+
+      - name: Update Assembly Version
+        run: .\set-version.ps1 -version ${{ github.event.inputs.app_version }}
 
       - name: Build and Publish Web App
         run: msbuild .\WPF\Cloud77.WPF.sln /p:Configuration=Release /p:Platform=x64

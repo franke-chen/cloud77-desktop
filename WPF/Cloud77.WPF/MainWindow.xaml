@@ -8,7 +8,7 @@
         ShowTitleBar="True"
                       ShowIconOnTitleBar="True"
                       WindowStartupLocation="CenterScreen" 
-                      WindowState="Normal" 
+                      WindowState="Maximized" 
                       WindowStyle="ThreeDBorderWindow" 
                       LeftWindowCommandsOverlayBehavior="Never"
                       RightWindowCommandsOverlayBehavior="Never"
@@ -19,33 +19,35 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
-            <RowDefinition Height="auto"/>
             <RowDefinition Height="1*"/>
             <RowDefinition Height="auto"/>
 
         </Grid.RowDefinitions>
-        <Button Content="Check Update" Click="Button_Click"/>
+
+        <Menu IsMainMenu="True">
+            <MenuItem Header="File"/>
+            <MenuItem Header="About Me"/>
+            <MenuItem Header="Check Update" Click="Button_Click"/>
+            <MenuItem x:Name="reload" Header="Reload" Visibility="Hidden" Click="Button_Click_1" />
+        </Menu>
         
-        <Button x:Name="reload" Content="Reload" Grid.Row="1" Visibility="Hidden" Click="Button_Click_1"/>
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="auto"/>
+            </Grid.ColumnDefinitions>
 
-        <Border Grid.Row="2">
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="auto"/>
-                    <RowDefinition Height="1*"/>
-                    <RowDefinition Height="auto"/>
-                </Grid.RowDefinitions>
+            <StackPanel Orientation="Vertical">
+                <RadioButton Content="remote" IsChecked="True" x:Name="remote"/>
+                <RadioButton Content="local" IsChecked="False"/>
+            </StackPanel>
 
-                <StackPanel Orientation="Vertical">
-                    <RadioButton Content="remote" IsChecked="False" x:Name="remote"/>
-                    <RadioButton Content="local" IsChecked="True"/>
-                </StackPanel>
-                <TextBlock x:Name="message" Text="Placeholder" Grid.Row="2"/>
-            </Grid>
-        </Border>
+            <Image Grid.Column="1" Source=".\background.jpg" Margin="5px"></Image>
 
+        </Grid>
+        
         <StatusBar Grid.Row="3" Opacity="0.68">
-            <StatusBarItem Content="todo"/>
+            <StatusBarItem x:Name="message" Content="Placeholder"/>
 
             <StatusBarItem HorizontalAlignment="Right">
                 <Label>
