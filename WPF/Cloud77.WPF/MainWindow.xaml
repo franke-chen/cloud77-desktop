@@ -3,63 +3,310 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+        xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"              
+        xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"       
         xmlns:local="clr-namespace:Cloud77.WPF" 
+        xmlns:vm="clr-namespace:Cloud77.WPF.ViewModel"
+        xmlns:tb="http://www.hardcodet.net/taskbar"
         ShowTitleBar="True"
-                      ShowIconOnTitleBar="True"
-                      WindowStartupLocation="CenterScreen" 
-                      WindowState="Maximized" 
-                      WindowStyle="ThreeDBorderWindow" 
-                      LeftWindowCommandsOverlayBehavior="Never"
-                      RightWindowCommandsOverlayBehavior="Never"
-                      TitleCharacterCasing="Normal"
-                      Loaded="MetroWindow_Loaded"
+        ShowIconOnTitleBar="True"
+        WindowStartupLocation="CenterOwner" 
+        WindowState="Maximized" 
+        WindowStyle="ThreeDBorderWindow" 
+        LeftWindowCommandsOverlayBehavior="Never"
+        RightWindowCommandsOverlayBehavior="Never"
+        TitleCharacterCasing="Normal"
+        Loaded="MetroWindow_Loaded"
+        Icon=".\cloud77.ico"
         mc:Ignorable="d"
+        d:DataContext="{d:DesignInstance vm:MainViewModel}"
         Title="MainWindow" Height="450" Width="800">
+    
+    <Controls:MetroWindow.WindowButtonCommands>
+        <Controls:WindowButtonCommands />
+    </Controls:MetroWindow.WindowButtonCommands>
+
+    <Controls:MetroWindow.RightWindowCommands>
+        <Controls:WindowCommands ShowLastSeparator="True">
+            <Button Click="Button_Help_Click">
+                <Button.Content>
+                    <md:PackIcon Kind="Help" VerticalAlignment="Center" ></md:PackIcon>
+                </Button.Content>
+            </Button>
+            <ToggleButton x:Name="settingToggleButton">
+                <md:PackIcon Kind="Settings" VerticalAlignment="Center" ></md:PackIcon>
+            </ToggleButton>
+        </Controls:WindowCommands>
+    </Controls:MetroWindow.RightWindowCommands>
+
+    <Controls:MetroWindow.Flyouts>
+        <Controls:FlyoutsControl>
+            <Controls:Flyout Header="Settings" 
+                             Position="Right" 
+                             Theme="Adapt" 
+                             IsModal="False"
+                             Margin="0 30 0 0"
+                             TitleVisibility="Visible" 
+                             IsPinned="False" 
+                             IsOpen="{Binding ElementName=settingToggleButton, Path=IsChecked, Mode=TwoWay}">
+                <StackPanel Orientation="Vertical" MinWidth="300">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="1*"/>
+                            <ColumnDefinition Width="1*"/>
+                        </Grid.ColumnDefinitions>
+                        <RadioButton Content="remote" IsChecked="True" x:Name="remote"/>
+                        <RadioButton Grid.Column="1" Content="local" IsChecked="False"/>
+                    </Grid>
+                   
+                    
+                    <!--<ListView ItemsSource="{Binding Path=ColorThemes}">
+                        
+                    </ListView>-->
+                    
+                    <TextBlock Text="{Binding Path=APIKey}"/>
+
+                    <Button Content="Save"/>
+                </StackPanel>
+            </Controls:Flyout>
+        </Controls:FlyoutsControl>
+    </Controls:MetroWindow.Flyouts>
+
+    <Controls:MetroWindow.Resources>
+        <Style TargetType="ListBoxItem" x:Key="myItemStyle">
+            <Setter Property="MinWidth" Value="120"/>
+            <Setter Property="Margin" Value="4 2"/>
+            <Setter Property="HorizontalAlignment" Value="Stretch"/>
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Style.Triggers>
+                <Trigger Property="IsSelected" Value="True">
+                    <Setter Property="Background" Value="Teal"/>
+                    <Setter Property="FontWeight" Value="Bold"/>
+                    <Setter Property="Foreground" Value="Red"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        <ControlTemplate TargetType="ListBoxItem" x:Key="myItem">
+            <Grid>
+                <Grid.Resources>
+                    <Style TargetType="Button" x:Key="itemdeletebtn">
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Visibility" Value="Visible"/>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </Grid.Resources>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <md:PackIcon Kind="Pin" VerticalAlignment="Center"/>
+                <Button Grid.Column="1" Content="{TemplateBinding Content}" 
+                         Width="{TemplateBinding Width}" VerticalAlignment="Center" 
+                         IsEnabled="False" Background="{TemplateBinding Background}">
+                    <Button.ContextMenu>
+                        <ContextMenu>
+                            <MenuItem Header="Close"></MenuItem>
+                            <MenuItem Header="Delete"></MenuItem>
+                        </ContextMenu>
+                    </Button.ContextMenu>
+                </Button>
+                <Button Grid.Column="2" Style="{DynamicResource itemdeletebtn}" Visibility="Hidden">
+                    <md:PackIcon Kind="Delete" VerticalAlignment="Center"/>
+                </Button>
+            </Grid>
+        </ControlTemplate>
+    </Controls:MetroWindow.Resources>
+
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
             <RowDefinition Height="1*"/>
+            <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
 
         </Grid.RowDefinitions>
 
-        <Menu IsMainMenu="True">
-            <MenuItem Header="File"/>
-            <MenuItem Header="About Me"/>
-            <MenuItem Header="Check Update" Click="Button_Click"/>
-            <MenuItem x:Name="reload" Header="Reload" Visibility="Hidden" Click="Button_Click_1" />
-        </Menu>
+        <DockPanel>
+            <Menu IsMainMenu="True"
+                  DockPanel.Dock="Left"
+                  Style="{DynamicResource MahApps.Styles.Menu}">
+                <MenuItem Header="File"
+                      VerticalAlignment="Center"
+                      Style="{DynamicResource MahApps.Styles.MenuItem}">
+                    <MenuItem Header="New" 
+                          InputGestureText="Ctrl+N"
+                          Style="{DynamicResource MahApps.Styles.MenuItem}"/>
+                    <MenuItem Header="Open" 
+                              Style="{DynamicResource MahApps.Styles.MenuItem}"/>
+                    <Separator />
+                    <MenuItem Header="Save" 
+                              InputGestureText="Ctrl+S" 
+                              Style="{DynamicResource MahApps.Styles.MenuItem}"/>
+                    <MenuItem Header="Exit" 
+                              Click="MenuItem_Click_Exit" 
+                              InputGestureText="Crrl+E" 
+                              Style="{DynamicResource MahApps.Styles.MenuItem}">
+                        <MenuItem.Icon>
+                            <md:PackIcon Kind="ExitToApp" />
+                        </MenuItem.Icon>
+                    </MenuItem>
+                </MenuItem>
+                <MenuItem Header="About Me"
+                      Click="MenuItem_AboutMe_Click"/>
+                <MenuItem Header="{Binding Path=UserName}"/>
+                <MenuItem Header="Check Update" 
+                      Click="MenuItem_CheckUpdate_Click"/>
+                
+                <MenuItem Header="Dialogs">
+                    <MenuItem Header="Login Dialog" 
+                              Click="MenuItem_Dialog_Login_Click"/>
+                    <MenuItem Header="Outside Dialog" 
+                              Click="MenuItem_Dialog_Outside_Click"/>
+                </MenuItem>
+
+                <MenuItem Header="Theme">
+                    <MenuItem Header="Blue" x:Name="Blue"
+                              Click="MenuItem_Theme_Click">
+                    </MenuItem>
+
+                    <MenuItem Header="Red" x:Name="Red"
+                              Click="MenuItem_Theme_Click">
+                        <MenuItem.Icon>
+                            <md:PackIcon Kind="Tick" />
+                        </MenuItem.Icon>
+                    </MenuItem>
+
+                    <MenuItem Header="Pink" x:Name="Pink"
+                              Click="MenuItem_Theme_Click"/>
+                </MenuItem>
+
+                <MenuItem Header="Language">
+                    <MenuItem Header="English" x:Name="english" Click="MenuItem_Language_Click">
+                        <MenuItem.Icon>
+                            <md:PackIcon Kind="Tick" />
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <MenuItem Header="Chinese" x:Name="chinese" Click="MenuItem_Language_Click"/>
+                </MenuItem>
+
+                <MenuItem x:Name="reload" Header="Restart" Visibility="Hidden"
+                      Click="MenuItem_Restart_Click_" />
+            </Menu>
+
+            <Grid DockPanel.Dock="Right">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="auto"/>
+                    <ColumnDefinition Width="auto"/>
+                    <ColumnDefinition Width="auto"/>
+                    <ColumnDefinition Width="auto"/>
+                    <ColumnDefinition Width="auto"/>
+                </Grid.ColumnDefinitions>
+                <md:PackIcon Grid.Column="0" 
+                             Kind="AccountBox" VerticalAlignment="Center" 
+                             HorizontalAlignment="Right"/>
+                <TextBlock Grid.Column="1" Style="{DynamicResource MahApps.Styles.TextBlock}" 
+                           Text="{Binding Path=UserName}" VerticalAlignment="Center" 
+                           HorizontalAlignment="Center" Margin="10 0"/>
+                <md:PackIcon Grid.Column="2" Kind="Email" VerticalAlignment="Center" 
+                             HorizontalAlignment="Right"/>
+                <TextBlock Grid.Column="3" Style="{DynamicResource MahApps.Styles.TextBlock}" 
+                           Text="{Binding Path=Email}" VerticalAlignment="Center" 
+                           HorizontalAlignment="Center" Margin="10 0"/>
+                <md:PackIcon Grid.Column="4" Kind="{Binding Path=Status}" 
+                             VerticalAlignment="Center" HorizontalAlignment="Right"/>
+                <TextBlock Grid.Column="5" Style="{DynamicResource MahApps.Styles.TextBlock}" 
+                           Text="{Binding Path=StatusText}" VerticalAlignment="Center" 
+                           HorizontalAlignment="Center" Margin="10 0"/>
+            </Grid>
+        </DockPanel>
+
+        <ToolBar Grid.Row="1">
+            <ToggleButton x:Name="menuToggle" 
+                          md:HintAssist.Hint="Menu" 
+                          IsChecked="{Binding Path=MenuChecked}">
+                <md:PackIcon Kind="{Binding Path=MenuKind}" />
+            </ToggleButton>
+
+            <Button Content="{DynamicResource general.new}" 
+                    Click="Button_New_Click"/>
+            <Button Content="{DynamicResource general.open}" />
+            <Button Content="{DynamicResource general.save}" />
+            <Button Content="Query Technical Data" />
+            <Button Content="Query Code Info" />
+            <Button Content="Quotation" />
+            <Button Content="Customer"  Click="Button_Customer_Click"/>
+            <Button Content="Editor1">
+                <Button.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Header="_Close"></MenuItem>
+                        <MenuItem Header="_Delete"></MenuItem>
+                    </ContextMenu>
+                </Button.ContextMenu>
+            </Button>
+            <ToggleButton IsChecked="False">
+                <md:PackIcon Kind="Settings" />
+            </ToggleButton>
+            <TextBlock Text="{Binding ElementName=tabs, Path=Items.Count}"/>
+        </ToolBar>
+
+        <Controls:SplitView Grid.Row="2" 
+                            DisplayMode="Inline" 
+                            IsPaneOpen="{Binding Path=MenuChecked}" 
+                            OpenPaneLength="300">
+            <Controls:SplitView.Pane>
+                <StackPanel Orientation="Vertical">
+                    <ListBox x:Name="listbox">
+                        <ListBoxItem Template="{StaticResource myItem}" Style="{StaticResource myItemStyle}" x:Name="home" Content="Home" Selected="ListBoxItem_Selected"></ListBoxItem>
+                        <ListBoxItem Template="{StaticResource myItem}" Style="{StaticResource myItemStyle}" x:Name="test" Content="Test" Selected="ListBoxItem_Selected"></ListBoxItem>
+                    </ListBox>
+
+                </StackPanel>
+            </Controls:SplitView.Pane>
+
+            <TabControl Grid.Column="1" x:Name="tabs" Margin="4">
+                <TabControl.Resources>
+                    <Style TargetType="TabItem">
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="TabItem"></ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </TabControl.Resources>
+                
+                <TabItem Header="home">
+                    <local:HomeUserControl></local:HomeUserControl>
+                </TabItem>
+
+                <TabItem Header="test">
+                    <local:TestUserControl></local:TestUserControl>
+                </TabItem>
+                
+            </TabControl>
+        </Controls:SplitView>
         
-        <Grid Grid.Row="1">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="1*"/>
-                <ColumnDefinition Width="auto"/>
-            </Grid.ColumnDefinitions>
-
-            <StackPanel Orientation="Vertical">
-                <RadioButton Content="remote" IsChecked="True" x:Name="remote"/>
-                <RadioButton Content="local" IsChecked="False"/>
-                <Button Content="todo1"/>
-                <Button Content="todo2"/>
-                <Button Content="todo3"/>
-                <Button Content="todo4"/>
-                <Button Content="todo5"/>
-                <TextBlock Text="placeholder"/>
-                <PasswordBox Password="123456"/>
-            </StackPanel>
-
-            <Image Grid.Column="1" Source=".\background.jpg" Margin="5px"></Image>
-
+        <Grid Grid.Row="3">
+            <ProgressBar x:Name="progress" Value="50" IsIndeterminate="True"/>
         </Grid>
         
-        <StatusBar Grid.Row="3" Opacity="0.68">
+        <StatusBar Grid.Row="4" Opacity="0.68" Style="{DynamicResource MahApps.Styles.StatusBar}">
             <StatusBarItem x:Name="message" Content="Placeholder"/>
-
-            <StatusBarItem HorizontalAlignment="Right">
-                <Label>
-                    <ProgressBar x:Name="progress" Value="50" Width="300"/>
-                </Label>
+            <Separator />
+            <StatusBarItem x:Name="clock" Content="todo"></StatusBarItem>
+            <StatusBarItem>
+                <tb:TaskbarIcon x:Name="MyNotifyIcon" ToolTipText="test">
+                    <tb:TaskbarIcon.TrayPopup>
+                        <Border BorderBrush="Orange" BorderThickness="2" CornerRadius="4" Opacity="0.8" Width="160" Height="40">
+                            <Button Content="click me" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </tb:TaskbarIcon.TrayPopup>
+                </tb:TaskbarIcon>
             </StatusBarItem>
         </StatusBar>
     </Grid>

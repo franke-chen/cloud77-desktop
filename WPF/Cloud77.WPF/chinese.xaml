@@ -1,0 +1,8 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:sys="clr-namespace:System;assembly=mscorlib">
+    <sys:String x:Key="ok">好的</sys:String>
+    <sys:String x:Key="general.new">新建</sys:String>
+    <sys:String x:Key="general.open">打开</sys:String>
+    <sys:String x:Key="general.save">保存</sys:String>
+</ResourceDictionary>
